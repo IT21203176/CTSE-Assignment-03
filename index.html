@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js"></script>
+  </head>
+
+  <body style="margin: 0; overflow: hidden;">
+    <a-scene embedded arjs>
+      <a-assets>
+        <audio id="bgMusic1" src="bird.mp3" preload="auto"></audio>
+        <audio id="bgMusic2" src="car.wav" preload="auto"></audio>
+        <audio id="bgMusic3" src="cow-mooing-343423.mp3" preload="auto"></audio>
+        <audio id="bgMusic4" src="chicken.mp3" preload="auto"></audio>
+
+        <a-asset-item id="farmer" src="farmer.glb"></a-asset-item>
+        <a-asset-item id="cow" src="Cow.glb"></a-asset-item>
+        <a-asset-item id="chicken" src="chicken.glb"></a-asset-item>
+        <a-asset-item id="birds"
+          src="birds.glb"></a-asset-item>
+        <a-asset-item id="palm" src="palm.glb"></a-asset-item>
+      </a-assets>
+
+      <a-marker preset="hiro">
+
+        <a-plane position="0 0 0" rotation="-90 0 0" width="3" height="2"
+          color="#90EE90"></a-plane>
+
+        <a-entity
+          id="zoom-birds"
+          gltf-model="#birds"
+          position="-1.2 0.2 0.8"
+          scale="0.1 0.1 0.1"
+          rotation="0 45 0"
+          animation__wind="property: rotation; to: 0 405 0; dur: 15000; loop: true; easing: linear">
+        </a-entity>
+
+        <a-entity
+          id="zoom-palm"
+          gltf-model="#palm"
+          position="1.2 0.1 0.8"
+          scale="0.6 0.6 0.6"
+          rotation="0 45 0">
+        </a-entity>
+
+
+        <a-entity
+          id="zoom-chicken"
+          gltf-model="#chicken"
+          position="-1.2 0.1 -0.8"
+          scale="0.05 0.05 0.05"
+          animation__move="property: position; dir: alternate; dur: 2000; loop: true; to: -1.0 0.1 -0.6; easing: easeInOutSine"
+          animation__rotate="property: rotation; to: 0 360 0; loop: true; dur: 10000; easing: linear">
+        </a-entity>
+
+
+        <a-entity
+          id="zoom-farmer"
+          gltf-model="#farmer"
+          position="1.2 0.1 -0.8"
+          scale="0.5 0.5 0.5"
+          animation__rotate="property: rotation; to: 0 360 0; loop: true; dur: 4000"
+          animation__bounce="property: position; dir: alternate; dur: 1500; loop: true; to: 1.2 0.5 -0.8; easing: easeInOutSine">
+        </a-entity>
+
+
+        <a-entity
+          id="zoom-cow"
+          gltf-model="#cow"
+           position="0 0.1 0" 
+        scale="0.1 0.1 0.1"
+          animation="property: position; to: 0 0.1 0.2; dir: alternate; dur: 3000; loop: true; easing: easeInOutSine">
+        </a-entity>
+
+        <!-- Background Music -->
+        <a-entity
+          sound="src: #bgMusic1; autoplay: true; loop: true; positional: false"></a-entity>
+        <a-entity
+          sound="src: #bgMusic2; autoplay: true; loop: false; positional: false"></a-entity>
+        <a-entity
+          sound="src: #bgMusic3; autoplay: true; loop: true; positional: false"></a-entity>
+<a-entity
+          sound="src: #bgMusic4; autoplay: true; loop: true; positional: false"></a-entity>
+      </a-marker>
+
+      <a-entity camera></a-entity>
+    </a-scene>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const zoomTargets = [
+        { id: "zoom-farmer", scale: 0.25 },
+        { id: "zoom-cow", scale: 0.8 },
+        { id: "zoom-chicken", scale: 0.2 },
+        { id: "zoom-birds", scale: 0.015 },
+        { id: "zoom-palm", scale: 0.3 }
+      ];
+
+      const hammer = new Hammer(document.body);
+      hammer.get('pinch').set({ enable: true });
+
+      hammer.on('pinch', function (ev) {
+        zoomTargets.forEach(obj => {
+          const newScale = Math.min(Math.max(obj.scale * ev.scale, 0.05), obj.scale * 2);
+          const entity = document.getElementById(obj.id);
+          if (entity) {
+            entity.setAttribute('scale', `${newScale} ${newScale} ${newScale}`);
+          }
+        });
+      });
+
+      hammer.on('pinchend', function (ev) {
+        zoomTargets.forEach(obj => {
+          obj.scale = Math.min(Math.max(obj.scale * ev.scale, 0.05), obj.scale * 2);
+        });
+      });
+    });
+  </script>
+  </body>
+
+</html>

@@ -1,125 +1,156 @@
 <!DOCTYPE html>
 <html>
-
   <head>
+    <!-- A-Frame core -->
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-    <script
-      src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.min.js"></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js"></script>
+    <!-- AR.js for A-Frame -->
+    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.min.js"></script>
+    <!-- Hammer.js for touch gestures -->
+    <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js"></script>
   </head>
 
-  <body style="margin: 0; overflow: hidden;">
+  <body style="margin: 0; overflow: hidden">
     <a-scene embedded arjs>
+      <!-- ASSETS -->
       <a-assets>
-        <audio id="bgMusic1" src="bird.mp3" preload="auto"></audio>
+        <!-- Background Music -->
+        <audio id="bgMusic1" src="cow-mooing-343423.mp3" preload="auto"></audio>
         <audio id="bgMusic2" src="car.wav" preload="auto"></audio>
-        <audio id="bgMusic3" src="cow-mooing-343423.mp3" preload="auto"></audio>
-        <audio id="bgMusic4" src="chicken.mp3" preload="auto"></audio>
+        <audio id="bgMusic3" src="bird.mp3" preload="auto"></audio>
 
+        <!-- GLB Models -->
         <a-asset-item id="farmer" src="farmer.glb"></a-asset-item>
         <a-asset-item id="cow" src="Cow.glb"></a-asset-item>
-        <a-asset-item id="chicken" src="chicken.glb"></a-asset-item>
-        <a-asset-item id="birds"
-          src="birds.glb"></a-asset-item>
-        <a-asset-item id="palm" src="palm.glb"></a-asset-item>
+        <a-asset-item
+          id="tractor"
+          src="tractor_massey_ferguson_35.glb"
+        ></a-asset-item>
+        <a-asset-item
+          id="barnhouse"
+          src="low_poly_medieval_house_5.glb"
+        ></a-asset-item>
+        <a-asset-item id="windmill" src="wind_turbines.glb"></a-asset-item>
       </a-assets>
 
+      <!-- MARKER AREA -->
       <a-marker preset="hiro">
+        <!-- Ground Plane -->
+        <a-plane
+          position="0 0 0"
+          rotation="-90 0 0"
+          width="4"
+          height="4"
+          color="#90EE90"
+        ></a-plane>
 
-        <a-plane position="0 0 0" rotation="-90 0 0" width="3" height="2"
-          color="#90EE90"></a-plane>
-
+        <!-- Top Left Corner (Barn House) -->
         <a-entity
-          id="zoom-birds"
-          gltf-model="#birds"
-          position="-1.2 0.2 0.8"
-          scale="0.1 0.1 0.1"
+          id="zoom-barnhouse"
+          gltf-model="#barnhouse"
+          position="-1.8 0.2 1.0"
+          scale="0.35 0.35 0.35"
           rotation="0 45 0"
-          animation__wind="property: rotation; to: 0 405 0; dur: 15000; loop: true; easing: linear">
+          animation__wind="property: rotation; to: 0 405 0; dur: 15000; loop: true; easing: linear"
+        >
         </a-entity>
 
+        <!-- Top Right Corner (Windmill/Palm) -->
         <a-entity
-          id="zoom-palm"
-          gltf-model="#palm"
-          position="1.2 0.1 0.8"
-          scale="0.6 0.6 0.6"
-          rotation="0 45 0">
+          id="zoom-windmill"
+          gltf-model="#windmill"
+          position="1.6 0.1 0.8"
+          scale="0.5 0.5 0.5"
+          rotation="0 0 0"
+          animation__spin="property: rotation; to: 0 360 0; dur: 4000; loop: true; easing: linear"
+        >
         </a-entity>
 
-
+        <!-- Bottom Left Corner (Tractor) -->
         <a-entity
-          id="zoom-chicken"
-          gltf-model="#chicken"
+          id="zoom-tractor"
+          gltf-model="#tractor"
           position="-1.2 0.1 -0.8"
-          scale="0.05 0.05 0.05"
+          scale="0.35 0.35 0.35"
           animation__move="property: position; dir: alternate; dur: 2000; loop: true; to: -1.0 0.1 -0.6; easing: easeInOutSine"
-          animation__rotate="property: rotation; to: 0 360 0; loop: true; dur: 10000; easing: linear">
+          animation__rotate="property: rotation; to: 0 360 0; loop: true; dur: 10000; easing: linear"
+        >
         </a-entity>
 
-
+        <!-- Bottom Right Corner (Farmer) -->
         <a-entity
           id="zoom-farmer"
           gltf-model="#farmer"
           position="1.2 0.1 -0.8"
-          scale="0.5 0.5 0.5"
+          scale="0.40 0.40 0.40"
           animation__rotate="property: rotation; to: 0 360 0; loop: true; dur: 4000"
-          animation__bounce="property: position; dir: alternate; dur: 1500; loop: true; to: 1.2 0.5 -0.8; easing: easeInOutSine">
+          animation__bounce="property: position; dir: alternate; dur: 1500; loop: true; to: 1.2 0.5 -0.8; easing: easeInOutSine"
+        >
         </a-entity>
 
-
+        <!-- Center (Cow) -->
         <a-entity
           id="zoom-cow"
           gltf-model="#cow"
-           position="0 0.1 0" 
-        scale="0.1 0.1 0.1"
-          animation="property: position; to: 0 0.1 0.2; dir: alternate; dur: 3000; loop: true; easing: easeInOutSine">
+          position="0 0.1 0"
+          scale="0.1 0.1 0.1"
+          animation="property: position; to: 0 0.1 0.2; dir: alternate; dur: 3000; loop: true; easing: easeInOutSine"
+        >
         </a-entity>
 
         <!-- Background Music -->
         <a-entity
-          sound="src: #bgMusic1; autoplay: true; loop: true; positional: false"></a-entity>
+          sound="src: #bgMusic1; autoplay: true; loop: true; positional: false"
+        ></a-entity>
         <a-entity
-          sound="src: #bgMusic2; autoplay: true; loop: false; positional: false"></a-entity>
+          sound="src: #bgMusic2; autoplay: true; loop: true; positional: false"
+        ></a-entity>
         <a-entity
-          sound="src: #bgMusic3; autoplay: true; loop: true; positional: false"></a-entity>
-<a-entity
-          sound="src: #bgMusic4; autoplay: true; loop: true; positional: false"></a-entity>
+          sound="src: #bgMusic3; autoplay: true; loop: true; positional: false"
+        ></a-entity>
       </a-marker>
 
       <a-entity camera></a-entity>
     </a-scene>
 
+    <!-- Gesture Zoom Script -->
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const zoomTargets = [
-        { id: "zoom-farmer", scale: 0.25 },
-        { id: "zoom-cow", scale: 0.8 },
-        { id: "zoom-chicken", scale: 0.2 },
-        { id: "zoom-birds", scale: 0.015 },
-        { id: "zoom-palm", scale: 0.3 }
-      ];
+      document.addEventListener("DOMContentLoaded", () => {
+        const zoomTargets = [
+          { id: "zoom-farmer", scale: 0.25 },
+          { id: "zoom-cow", scale: 0.8 },
+          { id: "zoom-tractor", scale: 0.2 },
+          { id: "zoom-barnhouse", scale: 0.015 },
+          { id: "zoom-windmill", scale: 0.3 },
+        ];
 
-      const hammer = new Hammer(document.body);
-      hammer.get('pinch').set({ enable: true });
+        const hammer = new Hammer(document.body);
+        hammer.get("pinch").set({ enable: true });
 
-      hammer.on('pinch', function (ev) {
-        zoomTargets.forEach(obj => {
-          const newScale = Math.min(Math.max(obj.scale * ev.scale, 0.05), obj.scale * 2);
-          const entity = document.getElementById(obj.id);
-          if (entity) {
-            entity.setAttribute('scale', `${newScale} ${newScale} ${newScale}`);
-          }
+        hammer.on("pinch", function (ev) {
+          zoomTargets.forEach((obj) => {
+            const newScale = Math.min(
+              Math.max(obj.scale * ev.scale, 0.05),
+              obj.scale * 2
+            );
+            const entity = document.getElementById(obj.id);
+            if (entity) {
+              entity.setAttribute(
+                "scale",
+                `${newScale} ${newScale} ${newScale}`
+              );
+            }
+          });
+        });
+
+        hammer.on("pinchend", function (ev) {
+          zoomTargets.forEach((obj) => {
+            obj.scale = Math.min(
+              Math.max(obj.scale * ev.scale, 0.05),
+              obj.scale * 2
+            );
+          });
         });
       });
-
-      hammer.on('pinchend', function (ev) {
-        zoomTargets.forEach(obj => {
-          obj.scale = Math.min(Math.max(obj.scale * ev.scale, 0.05), obj.scale * 2);
-        });
-      });
-    });
-  </script>
+    </script>
   </body>
-
 </html>
